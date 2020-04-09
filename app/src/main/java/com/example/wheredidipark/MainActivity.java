@@ -93,26 +93,9 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
         geocoder = new Geocoder(this, Locale.getDefault());
 
 
-            try {
-
-                addresses = geocoder.getFromLocation(dLatitude,dLongitude,1);
-
-                String address = addresses.get(0).getAddressLine(0);
-                String area = addresses.get(0).getLocality();
-                String city = addresses.get(0).getAdminArea();
-                String country = addresses.get(0).getCountryName();
-                String postalCode = addresses.get(0).getPostalCode();
-
-                String fullAddress = address+", "+ area +", "+ city + ", "+ country +", "+ postalCode;
-
-                parkingSpotAddress.setText(fullAddress);
-
-            } catch (IOException e) {
-              e.printStackTrace();
-            }
 
 
-        }
+    }
 
 
     @Override
@@ -153,9 +136,27 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
                         public void onSuccess(Location location) {
                             if (location != null) {
 
+                                dLatitude = location.getLatitude();
+                                dLongitude = location.getLongitude();
                                 latitude = String.valueOf(location.getLatitude());
                                 longitude = String.valueOf(location.getLongitude());
 
+                                try {
+                                    addresses = geocoder.getFromLocation(dLatitude,dLongitude,1);
+
+                                    String address = addresses.get(0).getAddressLine(0);
+                                    String area = addresses.get(0).getLocality();
+                                    String city = addresses.get(0).getAdminArea();
+                                    String country = addresses.get(0).getCountryName();
+                                    String postalCode = addresses.get(0).getPostalCode();
+
+                                    String fullAddress = address+", "+ area +", "+ city + ", "+ country +", "+ postalCode;
+
+                                    parkingSpotAddress.setText(fullAddress);
+
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                                 parkingSpotCoordinates.setText(latitude + ", " + longitude);
                             }
                         }
