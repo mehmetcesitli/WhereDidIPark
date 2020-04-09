@@ -39,16 +39,25 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
 
 
     Button parkHereButton;
+    Button whereAmIButton;
+    Button getMeToMyCarButton;
     TextView currentlyParked;
     TextView parkingSpotAddress;
     TextView parkingSpotCoordinates;
+    TextView currentLocationText;
+    TextView currentAddressText;
+    TextView currentLocationCoordinates;
+    TextView distanceToCarText;
+
 
     private GoogleApiClient googleApiClient;
     private FusedLocationProviderClient fusedLocationProviderClient;
+
     String latitude;
     String longitude;
     double dLatitude;
     double dLongitude;
+
     public static final int RequestPermissionCode = 1;
 
     Geocoder geocoder;
@@ -66,7 +75,13 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
         parkingSpotAddress = findViewById(R.id.parkingSpotAddress);
         parkingSpotCoordinates = findViewById(R.id.parkingSpotCoordinates);
 
-        parkingSpotCoordinates.setText("Longitude, Latitude");
+        whereAmIButton = findViewById(R.id.whereAmIButton);
+        getMeToMyCarButton = findViewById(R.id.getMeToMyCarButton);
+        currentLocationText = findViewById(R.id.currentLocationText);
+        currentAddressText = findViewById(R.id.currentAddressText);
+        currentLocationCoordinates = findViewById(R.id.currentLocationCoordinates);
+        distanceToCarText = findViewById(R.id.distanceToCarText);
+
         currentlyParked.setVisibility(View.INVISIBLE);
         parkingSpotCoordinates.setVisibility(View.INVISIBLE);
         parkingSpotAddress.setVisibility(View.INVISIBLE);
@@ -89,11 +104,7 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
                 .build();
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-
         geocoder = new Geocoder(this, Locale.getDefault());
-
-
-
 
     }
 

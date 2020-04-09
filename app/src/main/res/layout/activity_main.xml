@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="11dp"
-        android:text="38.387693, 27.044574"
+        android:text="Latitude, Longitude"
         android:textColor="#000000"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/whereAmIButton"
@@ -23,7 +23,7 @@
         app:layout_constraintVertical_bias="0.166" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/currentLocationCoordinates"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="13dp"
@@ -32,10 +32,10 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.068"
+        app:layout_constraintHorizontal_bias="0.076"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7"
-        app:layout_constraintVertical_bias="0.012" />
+        app:layout_constraintTop_toBottomOf="@+id/currentAddressText"
+        app:layout_constraintVertical_bias="0.006" />
 
     <Button
         android:id="@+id/parkHereButton"
@@ -59,7 +59,7 @@
         android:text="Where am I?"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="22sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView6"
+        app:layout_constraintBottom_toTopOf="@+id/currentLocationText"
         app:layout_constraintEnd_toStartOf="@+id/getMeToMyCarButton"
         app:layout_constraintStart_toStartOf="parent"
         tools:visibility="visible" />
@@ -69,16 +69,17 @@
         android:layout_width="176dp"
         android:layout_height="47dp"
         android:layout_marginTop="88dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginBottom="66dp"
         android:background="@android:color/holo_orange_light"
         android:text="Get me to my car"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="22sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView7"
+        app:layout_constraintBottom_toTopOf="@+id/currentAddressText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/parkingSpotAddress"
+        app:layout_constraintVertical_bias="1.0"
         tools:visibility="visible" />
 
     <TextView
@@ -100,7 +101,7 @@
         android:id="@+id/currentlyParkedText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="188dp"
+        android:layout_marginTop="196dp"
         android:text="Currently Parked:"
         android:textColor="#000000"
         android:textSize="18sp"
@@ -110,20 +111,20 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/currentLocationText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="13dp"
         android:text="Current Location:"
         android:textColor="#000000"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView7"
+        app:layout_constraintBottom_toTopOf="@+id/currentAddressText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.065"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/distanceToCarText"
         android:layout_width="293dp"
         android:layout_height="26dp"
         android:layout_marginTop="16dp"
@@ -131,25 +132,25 @@
         android:textColor="#000000"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.177"
+        app:layout_constraintHorizontal_bias="0.152"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@+id/currentLocationCoordinates" />
 
     <TextView
         android:id="@+id/parkingSpotAddress"
-        android:layout_width="369dp"
-        android:layout_height="52dp"
-        android:layout_marginBottom="452dp"
-        android:text=" Sakarya Cd. 156 Fevzi Çakmak 35330 Balçova/İzmir "
+        android:layout_width="374dp"
+        android:layout_height="65dp"
+        android:layout_marginBottom="432dp"
+        android:text="Parking Spot Address"
         android:textColor="#000000"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.38"
+        app:layout_constraintHorizontal_bias="0.41"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/currentAddressText"
         android:layout_width="369dp"
         android:layout_height="52dp"
         android:text="Bahçelerarası, Mithatpaşa Cd. No 46, 35330 Balçova/İzmir"
@@ -157,7 +158,9 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/parkingSpotAddress" />
+        app:layout_constraintTop_toBottomOf="@+id/parkingSpotAddress"
+        app:layout_constraintVertical_bias="0.502" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
