@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Where Did I Park</string>
+    <string name="title">Nereye park etmiştim?</string>
+    <string name="park_here">Park et!</string>
+    <string name="currently_parked">Şurada park halinde:</string>
+    <string name="current_location">Mevcut konumunuz:</string>
+    <string name="where_am_i">Neredeyim?</string>
+    <string name="get_me_to_car">Arabaya git</string>
+    <string name="distance_to_car">Arabaya olan mesafe (km):</string>
+</resources>
