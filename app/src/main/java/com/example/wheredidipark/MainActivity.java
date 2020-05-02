@@ -5,15 +5,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import android.Manifest;
-import android.content.Context;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
-import android.content.pm.PackageManager;
+
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 //import android.location.LocationListener;
 
@@ -21,6 +22,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.view.View;
 
@@ -35,7 +37,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-import com.google.android.gms.location.LocationListener;
 
 public class MainActivity extends AppCompatActivity implements ConnectionCallbacks,OnConnectionFailedListener /*implements LocationListener*/ {
 
@@ -43,6 +44,10 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
     private Button parkHereButton;
     private Button whereAmIButton;
     private Button getMeToMyCarButton;
+    private ImageButton trButton;
+    private ImageButton enButton;
+    private ImageButton deButton;
+    private ImageButton ruButton;
     private TextView currentlyParked;
     private TextView parkingSpotAddress;
     private TextView parkingSpotCoordinates;
@@ -50,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
     private TextView currentAddressText;
     private TextView currentLocationCoordinates;
     private TextView distanceToCarText;
+    private TextView distanceText;
 
 
     private GoogleApiClient googleApiClient;
@@ -120,15 +126,21 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
     }
 
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        loadLocale();
         setContentView(R.layout.activity_main);
 
         parkHereButton = findViewById(R.id.parkHereButton);
         whereAmIButton = findViewById(R.id.whereAmIButton);
         getMeToMyCarButton = findViewById(R.id.getMeToMyCarButton);
+        trButton = findViewById(R.id.tr_button);
+        enButton = findViewById(R.id.en_button);
+        deButton = findViewById(R.id.de_button);
+        ruButton = findViewById(R.id.ru_button);
 
         currentlyParked = findViewById(R.id.currentlyParkedText);
         parkingSpotAddress = findViewById(R.id.parkingSpotAddress);
@@ -136,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
         currentLocationText = findViewById(R.id.currentLocationText);
         currentAddressText = findViewById(R.id.currentAddressText);
         currentLocationCoordinates = findViewById(R.id.currentLocationCoordinates);
+        distanceText = findViewById(R.id.distanceText);
         distanceToCarText = findViewById(R.id.distanceToCarText);
 
         currentlyParked.setVisibility(View.INVISIBLE);
@@ -147,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
         currentLocationText.setVisibility(View.INVISIBLE);
         currentAddressText.setVisibility(View.INVISIBLE);
         currentLocationCoordinates.setVisibility(View.INVISIBLE);
+        distanceText.setVisibility(View.INVISIBLE);
         distanceToCarText.setVisibility(View.INVISIBLE);
 
 
@@ -175,13 +189,14 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
 
                 currentLocationCoordinates.setText(currentLocation.getLatitude() + ", " + currentLocation.getLongitude());
                 currentAddressText.setText(currentLocation.getAddress());
-                distanceToCarText.setText(distanceBetween(parkingSpotLocation,currentLocation)+ " km");
+                distanceText.setText(distanceBetween(parkingSpotLocation,currentLocation)+ " km");
 
                 getMeToMyCarButton.setVisibility(View.VISIBLE);
                 currentLocationText.setVisibility(View.VISIBLE);
                 currentAddressText.setVisibility(View.VISIBLE);
                 currentLocationCoordinates.setVisibility(View.VISIBLE);
                 distanceToCarText.setVisibility(View.VISIBLE);
+                distanceText.setVisibility(View.VISIBLE);
 
             }
         });
@@ -191,7 +206,6 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
             @Override
             public void onClick(View v) {
 
-                //Uri uri = Uri.parse("geo:37.7749,-122.4194");
                 Uri uri = Uri.parse("http://maps.google.com/maps?saddr="+currentLocation.getLatitude()+","+currentLocation.getLongitude()+"&daddr="+parkingSpotLocation.getLatitude()+","+parkingSpotLocation.getLongitude());
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, uri);
                 mapIntent.setPackage("com.google.android.apps.maps");
@@ -200,6 +214,39 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
                 }
             }
         });
+
+        trButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setLocale("tr");
+                recreate();
+            }
+        });
+
+        enButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setLocale("en");
+                recreate();
+            }
+        });
+
+        deButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setLocale("de");
+                recreate();
+            }
+        });
+
+        ruButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setLocale("ru");
+                recreate();
+            }
+        });
+
 
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -278,6 +325,23 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
     private void requestPermission(){
         ActivityCompat.requestPermissions(MainActivity.this, new
                 String[]{ACCESS_FINE_LOCATION}, RequestPermissionCode);
+    }
+
+    private void setLocale(String language){
+        Locale locale = new Locale(language);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
+
+        SharedPreferences.Editor editor = getSharedPreferences("Settings",MODE_PRIVATE).edit();
+        editor.putString("MyLanguage",language);
+        editor.apply();
+
+    }
+    public void loadLocale(){
+        SharedPreferences preferences = getSharedPreferences("Settings", Activity.MODE_PRIVATE);
+        String language = preferences.getString("MyLanguage","");
     }
 
 

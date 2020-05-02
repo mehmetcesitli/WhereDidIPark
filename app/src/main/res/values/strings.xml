@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Where Did I Park</string>
+    <string name="title">Where Did I Park?</string>
+    <string name="park_here">Park Here!</string>
+    <string name="currently_parked">Currently Parked:</string>
+    <string name="current_location">Current Location:</string>
+    <string name="where_am_i">Where am I?</string>
+    <string name="get_me_to_car">Get me to my car</string>
+    <string name="distance_to_car">"Distance to car (km): "</string>
 </resources>
