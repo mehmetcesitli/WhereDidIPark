@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Where Did I Park</string>
@@ -8,4 +9,16 @@
     <string name="current_location">Текущее местоположение:</string>
     <string name="get_me_to_car">К машине</string>
     <string name="distance_to_car">Расстояние до машины (км):</string>
+=======
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Where Did I Park</string>
+    <string name="title">Где моя машина?</string>
+    <string name="where_am_i">Где я?</string>
+    <string name="park_here">Припаркуйтесь!</string>
+    <string name="currently_parked">Припаркован:</string>
+    <string name="current_location">Текущее местоположение:</string>
+    <string name="get_me_to_car">К машине</string>
+    <string name="distance_to_car">Расстояние до машины (км):</string>
+>>>>>>> origin/master
 </resources>
