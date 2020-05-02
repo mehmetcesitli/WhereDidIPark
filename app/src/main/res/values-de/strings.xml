@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Where Did I Park</string>
+    <string name="title">Wo ist mein Auto?</string>
+    <string name="park_here">Hier parken!</string>
+    <string name="currently_parked">Derzeit geparkt:</string>
+    <string name="current_location">Aktueller Standort:</string>
+    <string name="where_am_i">Wo bin ich?</string>
+    <string name="get_me_to_car">Zum Auto gehen</string>
+    <string name="distance_to_car">Entfernung zum Auto (km):</string>
+</resources>

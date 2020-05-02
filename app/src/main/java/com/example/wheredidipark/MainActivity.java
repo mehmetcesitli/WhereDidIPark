@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
         currentLocationCoordinates = findViewById(R.id.currentLocationCoordinates);
         distanceText = findViewById(R.id.distanceText);
         distanceToCarText = findViewById(R.id.distanceToCarText);
-
+        
         currentlyParked.setVisibility(View.INVISIBLE);
         parkingSpotCoordinates.setVisibility(View.INVISIBLE);
         parkingSpotAddress.setVisibility(View.INVISIBLE);
@@ -195,8 +195,8 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
                 currentLocationText.setVisibility(View.VISIBLE);
                 currentAddressText.setVisibility(View.VISIBLE);
                 currentLocationCoordinates.setVisibility(View.VISIBLE);
-                distanceToCarText.setVisibility(View.VISIBLE);
                 distanceText.setVisibility(View.VISIBLE);
+                distanceToCarText.setVisibility(View.VISIBLE);
 
             }
         });
