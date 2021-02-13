@@ -38,7 +38,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements ConnectionCallbacks,OnConnectionFailedListener /*implements LocationListener*/ {
+public class MainActivity extends AppCompatActivity implements ConnectionCallbacks,OnConnectionFailedListener {
 
 
     private Button parkHereButton;
@@ -134,6 +134,14 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
         loadLocale();
         setContentView(R.layout.activity_main);
 
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        final SharedPreferences.Editor editor = pref.edit();
+
+        String parkingCoordinates = pref.getString("parking_coordinates", null);
+        String parkingAddress = pref.getString("parking_address",null);
+        String lat = pref.getString("latitude",null);
+        String lon = pref.getString("longitude", null);
+
         parkHereButton = findViewById(R.id.parkHereButton);
         whereAmIButton = findViewById(R.id.whereAmIButton);
         getMeToMyCarButton = findViewById(R.id.getMeToMyCarButton);
@@ -163,14 +171,39 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
         distanceText.setVisibility(View.INVISIBLE);
         distanceToCarText.setVisibility(View.INVISIBLE);
 
+        if(parkingAddress != null && parkingCoordinates != null && lat != null && lon != null){
+            parkingSpotLocation = new LocationInfo(Double.valueOf(lat), Double.valueOf(lon), parkingAddress);
+
+            parkingSpotCoordinates.setText(parkingCoordinates);
+            parkingSpotAddress.setText(parkingAddress);
+
+            currentlyParked.setVisibility(View.VISIBLE);
+            parkingSpotCoordinates.setVisibility(View.VISIBLE);
+            parkingSpotAddress.setVisibility(View.VISIBLE);
+            whereAmIButton.setVisibility(View.VISIBLE);
+        }
+
+
 
         parkHereButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 
                 parkingSpotLocation = new LocationInfo(latitude,longitude,fullAddress);
 
-                parkingSpotCoordinates.setText(parkingSpotLocation.getLatitude() + ", " + parkingSpotLocation.getLongitude());
-                parkingSpotAddress.setText(parkingSpotLocation.getAddress());
+                double lat = parkingSpotLocation.getLatitude();
+                double lon = parkingSpotLocation.getLongitude();
+
+                String parkingCoordinates = lat + ", " + lon;
+                String parkingAddress = parkingSpotLocation.getAddress();
+
+                parkingSpotCoordinates.setText(parkingCoordinates);
+                parkingSpotAddress.setText(parkingAddress);
+
+                editor.putString("parking_coordinates",parkingCoordinates);
+                editor.putString("parking_address", parkingAddress);
+                editor.putString("latitude", String.valueOf(lat));
+                editor.putString("longitude", String.valueOf(lon));
+                editor.commit();
 
                 currentlyParked.setVisibility(View.VISIBLE);
                 parkingSpotCoordinates.setVisibility(View.VISIBLE);
