@@ -7,4 +7,5 @@
     <string name="where_am_i">Where am I?</string>
     <string name="get_me_to_car">Get me to my car</string>
     <string name="distance_to_car">"Distance to car (km): "</string>
+    <string name="error">Could not retrieve location. Please make sure that location services are enabled on your device.</string>
 </resources>

@@ -8,4 +8,5 @@
     <string name="where_am_i">Neredeyim?</string>
     <string name="get_me_to_car">Arabaya git</string>
     <string name="distance_to_car">Arabaya olan mesafe (km):</string>
+    <string name="error">Konum bilgisine ulaşılamadı. Lütfen konum servislerinin aktif olduğundan emin olun.</string>
 </resources>

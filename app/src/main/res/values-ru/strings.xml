@@ -8,4 +8,5 @@
     <string name="current_location">Текущее местоположение:</string>
     <string name="get_me_to_car">К машине</string>
     <string name="distance_to_car">Расстояние до машины (км):</string>
+    <string name="error">Не удалось определить местоположение. Убедитесь, что на вашем устройстве включены службы определения местоположения.</string>
 </resources>

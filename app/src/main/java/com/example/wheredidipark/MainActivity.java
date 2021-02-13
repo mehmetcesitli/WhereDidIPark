@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -56,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
     private TextView currentLocationCoordinates;
     private TextView distanceToCarText;
     private TextView distanceText;
-
 
     private GoogleApiClient googleApiClient;
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -110,21 +110,6 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
 
     }
 
-    public String distanceBetween (LocationInfo l1, LocationInfo l2){
-
-        Location location1 = new Location("");
-        Location location2 = new Location("");
-
-        location1.setLatitude(l1.getLatitude());
-        location1.setLongitude(l1.getLongitude());
-        location2.setLatitude(l2.getLatitude());
-        location2.setLongitude(l2.getLongitude());
-
-        String distanceInKiloMeters = String.format("%.2f",location1.distanceTo(location2)/1000);
-
-        return distanceInKiloMeters;
-    }
-
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -158,18 +143,9 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
         currentLocationCoordinates = findViewById(R.id.currentLocationCoordinates);
         distanceText = findViewById(R.id.distanceText);
         distanceToCarText = findViewById(R.id.distanceToCarText);
-        
-        currentlyParked.setVisibility(View.INVISIBLE);
-        parkingSpotCoordinates.setVisibility(View.INVISIBLE);
-        parkingSpotAddress.setVisibility(View.INVISIBLE);
 
-        whereAmIButton.setVisibility(View.INVISIBLE);
-        getMeToMyCarButton.setVisibility(View.INVISIBLE);
-        currentLocationText.setVisibility(View.INVISIBLE);
-        currentAddressText.setVisibility(View.INVISIBLE);
-        currentLocationCoordinates.setVisibility(View.INVISIBLE);
-        distanceText.setVisibility(View.INVISIBLE);
-        distanceToCarText.setVisibility(View.INVISIBLE);
+        //hide elements at the beginning
+        hideElements();
 
         if(parkingAddress != null && parkingCoordinates != null && lat != null && lon != null){
             parkingSpotLocation = new LocationInfo(Double.valueOf(lat), Double.valueOf(lon), parkingAddress);
@@ -177,10 +153,8 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
             parkingSpotCoordinates.setText(parkingCoordinates);
             parkingSpotAddress.setText(parkingAddress);
 
-            currentlyParked.setVisibility(View.VISIBLE);
-            parkingSpotCoordinates.setVisibility(View.VISIBLE);
-            parkingSpotAddress.setVisibility(View.VISIBLE);
-            whereAmIButton.setVisibility(View.VISIBLE);
+            //Show parking spot info and where am i button
+            showParkingSpotInfo();
         }
 
 
@@ -190,26 +164,29 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
 
                 parkingSpotLocation = new LocationInfo(latitude,longitude,fullAddress);
 
-                double lat = parkingSpotLocation.getLatitude();
-                double lon = parkingSpotLocation.getLongitude();
+                if(parkingSpotLocation.getAddress() == null){
+                    Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.error), Toast.LENGTH_LONG);
+                    toast.show();
+                }
+                else {
+                    double lat = parkingSpotLocation.getLatitude();
+                    double lon = parkingSpotLocation.getLongitude();
 
-                String parkingCoordinates = lat + ", " + lon;
-                String parkingAddress = parkingSpotLocation.getAddress();
+                    String parkingCoordinates = lat + ", " + lon;
+                    String parkingAddress = parkingSpotLocation.getAddress();
 
-                parkingSpotCoordinates.setText(parkingCoordinates);
-                parkingSpotAddress.setText(parkingAddress);
+                    parkingSpotCoordinates.setText(parkingCoordinates);
+                    parkingSpotAddress.setText(parkingAddress);
 
-                editor.putString("parking_coordinates",parkingCoordinates);
-                editor.putString("parking_address", parkingAddress);
-                editor.putString("latitude", String.valueOf(lat));
-                editor.putString("longitude", String.valueOf(lon));
-                editor.commit();
+                    editor.putString("parking_coordinates", parkingCoordinates);
+                    editor.putString("parking_address", parkingAddress);
+                    editor.putString("latitude", String.valueOf(lat));
+                    editor.putString("longitude", String.valueOf(lon));
+                    editor.commit();
 
-                currentlyParked.setVisibility(View.VISIBLE);
-                parkingSpotCoordinates.setVisibility(View.VISIBLE);
-                parkingSpotAddress.setVisibility(View.VISIBLE);
-                whereAmIButton.setVisibility(View.VISIBLE);
-
+                    //Show parking spot location and where am i button
+                    showParkingSpotInfo();
+                }
             }
 
         });
@@ -220,17 +197,18 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
 
                 currentLocation = new LocationInfo(latitude,longitude,fullAddress);
 
-                currentLocationCoordinates.setText(currentLocation.getLatitude() + ", " + currentLocation.getLongitude());
-                currentAddressText.setText(currentLocation.getAddress());
-                distanceText.setText(distanceBetween(parkingSpotLocation,currentLocation)+ " km");
+                if(currentLocation.getAddress() == null){
+                    Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.error), Toast.LENGTH_LONG);
+                    toast.show();
+                }
+                else {
+                    currentLocationCoordinates.setText(currentLocation.getLatitude() + ", " + currentLocation.getLongitude());
+                    currentAddressText.setText(currentLocation.getAddress());
+                    distanceText.setText(calculateDistance(parkingSpotLocation, currentLocation) + " km");
 
-                getMeToMyCarButton.setVisibility(View.VISIBLE);
-                currentLocationText.setVisibility(View.VISIBLE);
-                currentAddressText.setVisibility(View.VISIBLE);
-                currentLocationCoordinates.setVisibility(View.VISIBLE);
-                distanceText.setVisibility(View.VISIBLE);
-                distanceToCarText.setVisibility(View.VISIBLE);
-
+                    //Show current location info and get me to my car button
+                    showCurrentLocationInfo();
+                }
             }
         });
 
@@ -377,7 +355,48 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
         String language = preferences.getString("MyLanguage","");
     }
 
+    public String calculateDistance (LocationInfo l1, LocationInfo l2){
 
+        Location location1 = new Location("");
+        Location location2 = new Location("");
 
+        location1.setLatitude(l1.getLatitude());
+        location1.setLongitude(l1.getLongitude());
+        location2.setLatitude(l2.getLatitude());
+        location2.setLongitude(l2.getLongitude());
+
+        String distanceInKiloMeters = String.format("%.2f",location1.distanceTo(location2)/1000);
+
+        return distanceInKiloMeters;
+    }
+    public void hideElements(){
+        currentlyParked.setVisibility(View.INVISIBLE);
+        parkingSpotCoordinates.setVisibility(View.INVISIBLE);
+        parkingSpotAddress.setVisibility(View.INVISIBLE);
+
+        whereAmIButton.setVisibility(View.INVISIBLE);
+        getMeToMyCarButton.setVisibility(View.INVISIBLE);
+        currentLocationText.setVisibility(View.INVISIBLE);
+        currentAddressText.setVisibility(View.INVISIBLE);
+        currentLocationCoordinates.setVisibility(View.INVISIBLE);
+        distanceText.setVisibility(View.INVISIBLE);
+        distanceToCarText.setVisibility(View.INVISIBLE);
+    }
+
+    public void showParkingSpotInfo(){
+        currentlyParked.setVisibility(View.VISIBLE);
+        parkingSpotCoordinates.setVisibility(View.VISIBLE);
+        parkingSpotAddress.setVisibility(View.VISIBLE);
+        whereAmIButton.setVisibility(View.VISIBLE);
+    }
+
+    public void showCurrentLocationInfo(){
+        getMeToMyCarButton.setVisibility(View.VISIBLE);
+        currentLocationText.setVisibility(View.VISIBLE);
+        currentAddressText.setVisibility(View.VISIBLE);
+        currentLocationCoordinates.setVisibility(View.VISIBLE);
+        distanceText.setVisibility(View.VISIBLE);
+        distanceToCarText.setVisibility(View.VISIBLE);
+    }
 
     }

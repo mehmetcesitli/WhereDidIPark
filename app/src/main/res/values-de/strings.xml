@@ -8,4 +8,5 @@
     <string name="where_am_i">Wo bin ich?</string>
     <string name="get_me_to_car">Zum Auto gehen</string>
     <string name="distance_to_car">Entfernung zum Auto (km):</string>
+    <string name="error">Standort konnte nicht abgerufen werden. Stellen Sie sicher, dass die Ortungsdienste auf Ihrem Gerät aktiviert sind. </string>
 </resources>
