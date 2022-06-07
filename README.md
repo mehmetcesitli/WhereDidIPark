@@ -9,4 +9,4 @@ Contains instances of:
 - Retrieval of location information using Geolocation.
 - Saving and using key-value pairs using shared preferences.
 
-Feel free to use and improve it.
+Feel free to test and use it.
